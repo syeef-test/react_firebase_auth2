@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import "./App.css";
 import {
@@ -12,42 +12,55 @@ import {
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Profile from "./pages/Profile";
+import AuthContext, { AuthContextProvider } from "./store/auth-context";
 
 function App() {
+  const authCtx = useContext(AuthContext);
+
+  const isLoggedIn = authCtx.isLoggedIn;
+
   return (
     <>
-      <Router>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/signup">Signup</Link>
-              </li>
-              <li>
-                <Link to="/signin">Signin</Link>
-              </li>
-              <li>
-                <Link to="/profile">Profile</Link>
-              </li>
-              <li>
-                <Link to="/logout">Logout</Link>
-              </li>
-            </ul>
-          </nav>
+      <AuthContextProvider>
+        <Router>
+          <div>
+            <nav>
+              <ul>
+                <li>
+                  <Link to="/signup">Signup</Link>
+                </li>
+                {!isLoggedIn && (
+                  <li>
+                    <Link to="/signin">Signin</Link>
+                  </li>
+                )}
+                {isLoggedIn && (
+                  <li>
+                    <Link to="/profile">Profile</Link>
+                  </li>
+                )}
+                {isLoggedIn && (
+                  <li>
+                    <Link to="/logout">Logout</Link>
+                  </li>
+                )}
+              </ul>
+            </nav>
 
-          <Switch>
-            <Route path="/signup">
-              <Signup />
-            </Route>
-            <Route path="/signin">
-              <Signin />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+            <Switch>
+              <Route path="/signup">
+                <Signup />
+              </Route>
+              <Route path="/signin">
+                <Signin />
+              </Route>
+              <Route path="/profile">
+                <Profile />
+              </Route>
+            </Switch>
+          </div>
+        </Router>
+      </AuthContextProvider>
     </>
   );
 }

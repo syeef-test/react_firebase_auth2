@@ -1,9 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
+import AuthContext from "../store/auth-context";
 
 function Signin() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const authCtx = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,6 +37,7 @@ function Signin() {
       }
       const data = await response.json();
       console.log(data.idToken);
+      authCtx.login(data.idToken);
 
       console.log("User signed in successfully!");
     } catch (error) {
