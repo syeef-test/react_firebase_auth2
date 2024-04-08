@@ -75,3 +75,12 @@ nav ul li a {
 nav ul li a:hover {
   color: yellow;
 }
+
+.logout-button {
+  background: none;
+  border: none;
+  color: #e3e9f0;
+
+  text-decoration: none ;
+  cursor: pointer;
+}

@@ -12,55 +12,66 @@ import {
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Profile from "./pages/Profile";
-import AuthContext, { AuthContextProvider } from "./store/auth-context";
+import AuthContext from "./store/auth-context";
+import { useHistory } from "react-router-dom";
 
 function App() {
   const authCtx = useContext(AuthContext);
 
   const isLoggedIn = authCtx.isLoggedIn;
 
+  const history = useHistory();
+
+  const handleLogout = () => {
+    authCtx.logout();
+    history.push("/signup");
+  };
+
   return (
     <>
-      <AuthContextProvider>
-        <Router>
-          <div>
-            <nav>
-              <ul>
+      <Router>
+        <div>
+          <nav>
+            <ul>
+              {!isLoggedIn && (
                 <li>
                   <Link to="/signup">Signup</Link>
                 </li>
-                {!isLoggedIn && (
-                  <li>
-                    <Link to="/signin">Signin</Link>
-                  </li>
-                )}
-                {isLoggedIn && (
-                  <li>
-                    <Link to="/profile">Profile</Link>
-                  </li>
-                )}
-                {isLoggedIn && (
-                  <li>
-                    <Link to="/logout">Logout</Link>
-                  </li>
-                )}
-              </ul>
-            </nav>
+              )}
 
-            <Switch>
-              <Route path="/signup">
-                <Signup />
-              </Route>
-              <Route path="/signin">
-                <Signin />
-              </Route>
-              <Route path="/profile">
-                <Profile />
-              </Route>
-            </Switch>
-          </div>
-        </Router>
-      </AuthContextProvider>
+              {!isLoggedIn && (
+                <li>
+                  <Link to="/signin">Signin</Link>
+                </li>
+              )}
+              {isLoggedIn && (
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+              )}
+              {isLoggedIn && (
+                <li>
+                  <button className="logout-button" onClick={handleLogout}>
+                    Logout
+                  </button>
+                </li>
+              )}
+            </ul>
+          </nav>
+
+          <Switch>
+            <Route path="/signup">
+              <Signup />
+            </Route>
+            <Route path="/signin">
+              <Signin />
+            </Route>
+            <Route path="/profile">
+              <Profile />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </>
   );
 }

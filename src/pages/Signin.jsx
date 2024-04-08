@@ -1,11 +1,13 @@
 import React, { useRef, useState, useContext } from "react";
 import AuthContext from "../store/auth-context";
+import { useHistory } from "react-router-dom";
 
 function Signin() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const authCtx = useContext(AuthContext);
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,6 +42,7 @@ function Signin() {
       authCtx.login(data.idToken);
 
       console.log("User signed in successfully!");
+      history.push("/profile");
     } catch (error) {
       console.error("Error signing up:", error.message);
       alert(error.message);
@@ -53,7 +56,7 @@ function Signin() {
 
   return (
     <div>
-      <h2>Sign Up</h2>
+      <h2>Sign In</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email:</label>
