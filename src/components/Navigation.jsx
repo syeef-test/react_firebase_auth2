@@ -9,7 +9,8 @@ function Navigation() {
 
   const handleLogout = () => {
     authCtx.logout();
-    //history.push("/signin");
+    console.log("logout succesful");
+    history.push("/signin");
   };
 
   return (

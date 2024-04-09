@@ -25,7 +25,9 @@ function App() {
 
   const handleLogout = async () => {
     await authCtx.logout();
+    console.log("logout");
     history.push("/signin");
+    console.log("logout");
   };
 
   return (
