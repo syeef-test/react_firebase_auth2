@@ -10,7 +10,6 @@ function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
     const key = import.meta.env.VITE_FIREBASE_APP_ID;
@@ -22,9 +21,9 @@ function Profile() {
         {
           method: "POST",
           body: JSON.stringify({
-            idToken: authCtx.idToken,
+            idToken: authCtx.token,
             password: password,
-            returnSecureToken: false,
+            returnSecureToken: true,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -35,14 +34,19 @@ function Profile() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error.message);
+      } else {
+        const data = await response.json();
+        console.log(data.idToken);
+        authCtx.login(data.idToken);
+        //history.replace("/");
+        // authCtx.login(data.idToken);
+        // history.push("/profile");
       }
-      const data = await response.json();
-      console.log(data.idToken);
-      authCtx.login(data.idToken);
 
-      console.log("Password Changed!");
+      console.log("Password changed successfully!");
+      alert("Password changed successfully!");
     } catch (error) {
-      console.error("Error resting password:", error.message);
+      console.error("Error in password change:", error.message);
       alert(error.message);
     } finally {
       setLoading(false);

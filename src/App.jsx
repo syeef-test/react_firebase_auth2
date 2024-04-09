@@ -14,6 +14,7 @@ import Signin from "./pages/Signin";
 import Profile from "./pages/Profile";
 import AuthContext from "./store/auth-context";
 import { useHistory } from "react-router-dom";
+import Navigation from "./components/Navigation";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -22,42 +23,16 @@ function App() {
 
   const history = useHistory();
 
-  const handleLogout = () => {
-    authCtx.logout();
-    history.push("/signup");
+  const handleLogout = async () => {
+    await authCtx.logout();
+    history.push("/signin");
   };
 
   return (
     <>
       <Router>
         <div>
-          <nav>
-            <ul>
-              {!isLoggedIn && (
-                <li>
-                  <Link to="/signup">Signup</Link>
-                </li>
-              )}
-
-              {!isLoggedIn && (
-                <li>
-                  <Link to="/signin">Signin</Link>
-                </li>
-              )}
-              {isLoggedIn && (
-                <li>
-                  <Link to="/profile">Profile</Link>
-                </li>
-              )}
-              {isLoggedIn && (
-                <li>
-                  <button className="logout-button" onClick={handleLogout}>
-                    Logout
-                  </button>
-                </li>
-              )}
-            </ul>
-          </nav>
+          <Navigation />
 
           <Switch>
             <Route path="/signup">
