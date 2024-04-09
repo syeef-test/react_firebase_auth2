@@ -23,8 +23,8 @@ function App() {
 
   const history = useHistory();
 
-  const handleLogout = async () => {
-    await authCtx.logout();
+  const handleLogout = () => {
+    authCtx.logout();
     console.log("logout");
     history.push("/signin");
     console.log("logout");
@@ -37,14 +37,26 @@ function App() {
           <Navigation />
 
           <Switch>
-            <Route path="/signup">
-              <Signup />
-            </Route>
-            <Route path="/signin">
-              <Signin />
-            </Route>
-            <Route path="/profile">
-              <Profile />
+            {!authCtx.isLoggedIn && (
+              <Route path="/signup">
+                <Signup />
+              </Route>
+            )}
+
+            {!authCtx.isLoggedIn && (
+              <Route path="/signin">
+                <Signin />
+              </Route>
+            )}
+
+            {authCtx.isLoggedIn && (
+              <Route path="/profile">
+                <Profile />
+              </Route>
+            )}
+
+            <Route path="*">
+              <Redirect to="signin" />
             </Route>
           </Switch>
         </div>
